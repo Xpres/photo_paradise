@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, ScrollView, Dimensions } from 'react-native';
+import { View, ScrollView, Dimensions, Image } from 'react-native';
 
 import Video from 'react-native-video';
 
@@ -9,6 +9,9 @@ import { faPlus, faHeart, faCommentDots, faPlay } from '@fortawesome/free-solid-
 import BottomTabNavigator from '../../components/BottomTabNavigator';
 
 import videos from '../../Data/Videos/videos';
+
+import { ImageZoom } from '@likashefqet/react-native-image-zoom';
+import PagerView from 'react-native-pager-view';
 
 import {
     styles,
@@ -41,18 +44,14 @@ export default function Home({ navigation }) {
             <NewsByFollowing>
                 <NewsByFollowingText>Following | <NewsByFollowingTextBold>For You</NewsByFollowingTextBold> </NewsByFollowingText>
             </NewsByFollowing>
-            <ScrollView bounces={false} showsVerticalScrollIndicator={false}>
-                {videos.map(video => (
+            <PagerView style={{ flex: 1 }} orientation="vertical" initialPage={0}>
+                {videos.map(video => (                    
                     <View
                         key={video.id}
                         style={{ flex: 1, height: Dimensions.get("window").height, backgroundColor: '#010101' }}>
-                        <Video
-                            style={styles.backgroundVideo}
-                            source={video.url}
-                            resizeMode="cover"
-                            onTouchStart={() => setPaused(!paused)}
-                            paused={paused}
-                            repeat />
+                       <ImageZoom  source={{ uri: video.user.image }} 
+                       style= {{flex:1 , width: '100%', height: '100%', resizeMode: 'contain'}}
+                    />
                         <ContentRight>
                             <ContentRightUser>
                                 <ContentRightUserImage resizeMode="contain" source={{ uri: video.user.image }} />
@@ -90,7 +89,7 @@ export default function Home({ navigation }) {
                         </ContentLeftBottom>
                     </View>
                 ))}
-            </ScrollView>
+                </PagerView> 
             <BottomTabNavigator background="transparent" colorIcon="#FFF" colorTitle="#FFF" navigation={navigation} />
         </View>
     )

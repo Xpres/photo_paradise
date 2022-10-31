@@ -28,12 +28,12 @@
 
 This project was developed with the technologies:
 
--  [React Native](http://www.reactnative.com/)
--  [react-navigation](https://reactnavigation.org/)
--  [react-native-vector-icons](https://github.com/oblador/react-native-vector-icons)
--  [styled-components](https://www.styled-components.com/)
--  [react-native-video](https://github.com/react-native-community/react-native-video)
--  [Visual Studio Code](https://code.visualstudio.com/)
+- [React Native](http://www.reactnative.com/)
+- [react-navigation](https://reactnavigation.org/)
+- [react-native-vector-icons](https://github.com/oblador/react-native-vector-icons)
+- [styled-components](https://www.styled-components.com/)
+- [react-native-video](https://github.com/react-native-community/react-native-video)
+- [Visual Studio Code](https://code.visualstudio.com/)
 
 ## :information_source: How To Use
 
@@ -41,7 +41,7 @@ To clone and run this application, you'll need [Git](https://git-scm.com), [Node
 
 ```bash
 # Clone this repository
-$ git clone https://github.com/luizpaulogroup/react-native-spotify
+$ git clone "this repo"
 
 # Go into the repository
 $ cd react-native-spotify
@@ -50,13 +50,11 @@ $ cd react-native-spotify
 $ yarn install
 
 # Run the app (iOS)
-$ react-native run-ios --simulator="iPhone XS Max"
+expo start
 
 # Run the app (Android)
-$ react-native run-android
+npx expo start
 
 ```
 
 ---
-
-Made with ♥ by Luiz Paulo :wave: [Get in touch!](https://www.linkedin.com/in/luizpaulogroup/)
