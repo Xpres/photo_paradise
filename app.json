@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Photo_expo2",
-    "slug": "Photo_expo2",
+    "name": "photo_paradise",
+    "slug": "photo_paradise",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

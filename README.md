@@ -1,10 +1,10 @@
-<h1 align="center">Cloning the TikTok interface</h1>
+<h1 align="center">Photo Paradise random photo gallery with TikTok like interface</h1>
 
 <h1 align="center">
     <img alt="React logo" width="70px" height="50px" src="https://github.com/luizpaulogroup/react-native-tiktok/blob/master/src/assets/react.png" />
     <img alt="React logo" width="40px" height="40px" src="https://github.com/luizpaulogroup/react-native-tiktok/blob/master/src/assets/tiktok.png" />
     <br>
-    TikTok React Native
+    Photo Paradise React Native
 </h1>
 
 <p align="center">
@@ -13,7 +13,6 @@
 </p>
 
 <h1 align="center">
-    <img width="250px" src="https://github.com/luizpaulogroup/TikTok/blob/master/src/Images/GIF.gif" style="max-width:100%;">
     <img width="250px" src="https://github.com/luizpaulogroup/TikTok/blob/master/src/Images/1.png" style="max-width:100%;">
     <img width="250px" src="https://github.com/luizpaulogroup/TikTok/blob/master/src/Images/2.png" style="max-width:100%;">
 </h1>
@@ -41,10 +40,10 @@ To clone and run this application, you'll need [Git](https://git-scm.com), [Node
 
 ```bash
 # Clone this repository
-$ git clone "this repo"
+$ git clone https://github.com/Xpres/photo_paradise
 
 # Go into the repository
-$ cd react-native-spotify
+$ cd photo_paradise
 
 # Install dependencies
 $ yarn install
@@ -57,4 +56,6 @@ npx expo start
 
 ```
 
----
+## Observation
+
+Tested only on andoid for now
