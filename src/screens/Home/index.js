@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   View,
   Dimensions,
@@ -38,7 +38,6 @@ import {
   ContentLeftBottomNameUserText,
   ContentLeftBottomDescription,
 } from "./styles";
-let skip = 0;
 
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -48,6 +47,7 @@ export default function Home({ navigation }) {
   const [paused, setPaused] = useState(false);
   const [feed, setfeed] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
+  const skip = useRef(0);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -55,8 +55,8 @@ export default function Home({ navigation }) {
   }, []);
   async function LoadFeed() {
     try {
-      const response = await api.get("/feed?_limit=3&_skip=" + skip); // ?_expand=author&_limit=5&_skip=15
-      skip = skip + 3;
+      const response = await api.get("/feed?_limit=3&_skip=" + skip.current); // ?_expand=author&_limit=5&_skip=15
+      skip.current = skip.current + 3;
       const data = await response.data;
       setfeed(feed.concat(data));
       console.log(feed);
@@ -114,7 +114,7 @@ export default function Home({ navigation }) {
       >
         {feed.map((feedImg) => (
           <View
-            key={feedImg._id}
+            key={feedImg.id}
             style={{
               flex: 1,
               height: Dimensions.get("window").height,
@@ -144,7 +144,13 @@ export default function Home({ navigation }) {
               <ContentRightUserPlus>
                 <FontAwesomeIcon icon={faPlus} size={12} color="#FFF" />
               </ContentRightUserPlus>
-              <ContentRightHeart>
+              <ContentRightHeart
+                onPress={() => {
+                  feedImg.countLikes++;
+                  console.log(`couts like: ${feedImg.countLikes}`);
+                  navigation.navigate("Login");
+                }}
+              >
                 <FontAwesomeIcon icon={faHeart} size={28} color="#FFF" />
                 <ContentRightText>
                   {feedImg.countLikes > 1000
@@ -157,7 +163,7 @@ export default function Home({ navigation }) {
                 <ContentRightText>
                   {feedImg.countComments > 1000
                     ? `${feedImg.countComments}K`
-                    : feedImg.countLikes}
+                    : feedImg.countComments}
                 </ContentRightText>
               </ContentRightComment>
             </ContentRight>
