@@ -2,26 +2,35 @@ import React, { createContext, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "./AuthContext";
 import createAuthRefreshInterceptor from "axios-auth-refresh";
-import * as Keychain from "react-native-keychain";
+import * as SecureStore from "expo-secure-store";
 
 const AxiosContext = createContext();
 const { Provider } = AxiosContext;
+
+//ToDO: make url adress unike and configurable one place
+// make posible multiple adresses to fallback
+// make it dinamicaly updatable from specific api, with prioritis eventualy
+// so multiple paralel servers be posible, for load balancing
 
 const AxiosProvider = ({ children }) => {
   const authContext = useContext(AuthContext);
 
   const authAxios = axios.create({
-    baseURL: "http://192.168.1.2:3000",
+    baseURL: "http://192.168.1.4:3000",
   });
 
   const publicAxios = axios.create({
-    baseURL: "http://192.168.1.2:3000",
+    baseURL: "http://192.168.1.4:3000",
   });
 
   authAxios.interceptors.request.use(
     (config) => {
       if (!config.headers.Authorization) {
-        config.headers.Authorization = `Bearer ${authContext.getAccessToken()}`;
+        config.headers.Authorization = `token ${authContext.getAccessToken()}`;
+        console.log(
+          "authContext.getAccessToken:" + authContext.getAccessToken()
+        );
+        config.headers["x-access-token"] = authContext.getAccessToken();
       }
 
       return config;
@@ -52,7 +61,7 @@ const AxiosProvider = ({ children }) => {
           accessToken: tokenRefreshResponse.data.accessToken,
         });
 
-        await Keychain.setGenericPassword(
+        await SecureStore.setItemAsync(
           "token",
           JSON.stringify({
             accessToken: tokenRefreshResponse.data.accessToken,

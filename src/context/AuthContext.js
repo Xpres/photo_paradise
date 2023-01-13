@@ -1,5 +1,6 @@
 import React, { createContext, useState } from "react";
 import * as Keychain from "react-native-keychain";
+import * as SecureStore from "expo-secure-store";
 
 const AuthContext = createContext(null);
 const { Provider } = AuthContext;
@@ -12,7 +13,7 @@ const AuthProvider = ({ children }) => {
   });
 
   const logout = async () => {
-    await Keychain.resetGenericPassword();
+    await SecureStore.deleteItemAsync("token");
     setAuthState({
       accessToken: null,
       refreshToken: null,
@@ -24,6 +25,33 @@ const AuthProvider = ({ children }) => {
     return authState.accessToken;
   };
 
+  const registerJwt = async (responseToken) => {
+    //const { accessToken, refreshToken } = response.data;
+    //ToDo: refresh token to be implemented
+    //ToDo: check for a valid token?
+    const accessToken = responseToken.token;
+    const refreshToken = "ToBe implemented";
+    setAuthState({
+      accessToken,
+      refreshToken,
+      authenticated: true,
+    });
+
+    try {
+      await SecureStore.setItemAsync(
+        "token",
+        JSON.stringify({
+          accessToken,
+          refreshToken,
+        })
+      );
+
+      console.log("SecureStore jwt for future auth: " + responseToken.token);
+    } catch (error) {
+      console.log("error storing token: " + error);
+    }
+  };
+
   return (
     <Provider
       value={{
@@ -31,6 +59,7 @@ const AuthProvider = ({ children }) => {
         getAccessToken,
         setAuthState,
         logout,
+        registerJwt,
       }}
     >
       {children}

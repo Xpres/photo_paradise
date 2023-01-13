@@ -8,44 +8,43 @@ import {
   Alert,
 } from "react-native";
 import React, { useContext, useState } from "react";
-import { AuthContext } from "../../context/AuthContext";
-import * as Keychain from "react-native-keychain";
 import { AxiosContext } from "../../context/AxiosContext";
+import { AuthContext } from "../../context/AuthContext";
 
-const Login = () => {
+const Login = ({ navigation }) => {
   const [email, setEmail] = useState("");
-
   const [password, setPassword] = useState("");
-  const authContext = useContext(AuthContext);
+
   const { publicAxios } = useContext(AxiosContext);
+  const authContext = useContext(AuthContext);
 
   const onLogin = async () => {
+    let response;
     try {
-      const response = await publicAxios.post("/login", {
+      response = await publicAxios.post("/login", {
         email,
         password,
       });
 
+      //ToDo: check response message? to prompt apropriete mesaje to user? or implement data.message response from server.
+
       console.log("response: " + response.data.token);
+      authContext.registerJwt(response.data);
 
-      //const { accessToken, refreshToken } = response.data;
-      const accessToken = response.data.token;
-      const refreshToken = "ss";
-      authContext.setAuthState({
-        accessToken,
-        refreshToken,
-        authenticated: true,
+      navigation.navigate("User", {
+        user: {
+          image:
+            "https://p16-va-default.akamaized.net/img/musically-maliva-obj/1606484041765893~c5_720x720.jpeg",
+          name: response.data.email,
+          following: "50",
+          followers: "55",
+          likes: "3",
+        },
       });
-
-      await Keychain.setGenericPassword(
-        "token",
-        JSON.stringify({
-          accessToken,
-          refreshToken,
-        })
-      );
     } catch (error) {
-      //Alert.alert("Login Failed", error.response.data.message);
+      if (error.response) {
+        Alert.alert("Login Failed", error.response.data); // => the response payload
+      } else Alert.alert("Login Failed");
       console.log("error: " + error);
     }
   };
@@ -74,6 +73,11 @@ const Login = () => {
         />
       </View>
       <Button title="Login" style={styles.button} onPress={() => onLogin()} />
+      <Button
+        title="Register"
+        style={styles.button}
+        onPress={() => navigation.navigate("Register")}
+      />
     </SafeAreaView>
   );
 };
